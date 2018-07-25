@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2018 GamakCZ
+ * Copyright 2018 Swifty
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -67,35 +67,35 @@ class ArenaScheduler extends Task {
         switch ($this->plugin->phase) {
             case Arena::PHASE_LOBBY:
                 if(count($this->plugin->players) >= 2) {
-                    $this->plugin->broadcastMessage("§a> Starting in " . Time::calculateTime($this->startTime) . " sec.", Arena::MSG_TIP);
+                    $this->plugin->broadcastMessage("> Starting in " . Time::calculateTime($this->startTime) . " sec.", Arena::MSG_TIP);
                     $this->startTime--;
                     if($this->startTime == 0) {
                         $this->plugin->startGame();
                     }
                 }
                 else {
-                    $this->plugin->broadcastMessage("§c> You need more players to start a game!", Arena::MSG_TIP);
+                    $this->plugin->broadcastMessage("> You need more players to start a game!", Arena::MSG_TIP);
                     $this->startTime = 40;
                 }
                 break;
             case Arena::PHASE_GAME:
-                $this->plugin->broadcastMessage("§a> There are " . count($this->plugin->players) . " players, time to end: " . Time::calculateTime($this->gameTime) . "", Arena::MSG_TIP);
+                $this->plugin->broadcastMessage("> There are " . count($this->plugin->players) . " players, time to end: " . Time::calculateTime($this->gameTime) . "", Arena::MSG_TIP);
                 switch ($this->gameTime) {
                     case 15 * 60:
-                        $this->plugin->broadcastMessage("§a> All chests will be refilled in 5 min.");
+                        $this->plugin->broadcastMessage("> All chests will be refilled in 5 min.");
                         break;
                     case 11 * 60:
-                        $this->plugin->broadcastMessage("§a> All chest will be refilled in 1 min.");
+                        $this->plugin->broadcastMessage("> All chest will be refilled in 1 min.");
                         break;
                     case 10 * 60:
-                        $this->plugin->broadcastMessage("§a> All chests are refilled.");
+                        $this->plugin->broadcastMessage("> All chests are refilled.");
                         break;
                 }
                 if($this->plugin->checkEnd()) $this->plugin->startRestart();
                 $this->gameTime--;
                 break;
             case Arena::PHASE_RESTART:
-                $this->plugin->broadcastMessage("§a> Restarting in {$this->restartTime} sec.", Arena::MSG_TIP);
+                $this->plugin->broadcastMessage("> Restarting in {$this->restartTime} sec.", Arena::MSG_TIP);
                 $this->restartTime--;
 
                 switch ($this->restartTime) {
@@ -129,10 +129,10 @@ class ArenaScheduler extends Task {
         if(!$signPos->getLevel() instanceof Level) return;
 
         $signText = [
-            "§e§lSkyWars",
-            "§9[ §b? / ? §9]",
-            "§6Setup",
-            "§6Wait few sec..."
+            "SkyWars",
+            "[ ? / ? §9]",
+            "Setup",
+            "Wait few sec..."
         ];
 
         if($signPos->getLevel()->getTile($signPos) === null) return;
@@ -149,21 +149,21 @@ class ArenaScheduler extends Task {
         switch ($this->plugin->phase) {
             case Arena::PHASE_LOBBY:
                 if(count($this->plugin->players) >= $this->plugin->data["slots"]) {
-                    $signText[2] = "§6Full";
-                    $signText[3] = "§8Map: §7{$this->plugin->level->getFolderName()}";
+                    $signText[2] = "Full";
+                    $signText[3] = "Map: §7{$this->plugin->level->getFolderName()}";
                 }
                 else {
-                    $signText[2] = "§aJoin";
-                    $signText[3] = "§8Map: §7{$this->plugin->level->getFolderName()}";
+                    $signText[2] = "Join";
+                    $signText[3] = "Map: §7{$this->plugin->level->getFolderName()}";
                 }
                 break;
             case Arena::PHASE_GAME:
-                $signText[2] = "§5InGame";
-                $signText[3] = "§8Map: §7{$this->plugin->level->getFolderName()}";
+                $signText[2] = "InGame";
+                $signText[3] = "Map: §7{$this->plugin->level->getFolderName()}";
                 break;
             case Arena::PHASE_RESTART:
-                $signText[2] = "§cRestarting...";
-                $signText[3] = "§8Map: §7{$this->plugin->level->getFolderName()}";
+                $signText[2] = "Restarting...";
+                $signText[3] = "Map: §7{$this->plugin->level->getFolderName()}";
                 break;
         }
 
