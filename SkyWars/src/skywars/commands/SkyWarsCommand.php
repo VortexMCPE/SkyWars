@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2018 GamakCZ
+ * Copyright 2018 Swifty
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -44,7 +44,7 @@ class SkyWarsCommand extends Command implements PluginIdentifiableCommand {
      */
     public function __construct(SkyWars $plugin) {
         $this->plugin = $plugin;
-        parent::__construct("skywars", "SkyWars commands", \null, ["sw"]);
+        parent::__construct("skywars", "SkyWars Commands", \null, ["sw"]);
     }
 
     /**
@@ -55,55 +55,55 @@ class SkyWarsCommand extends Command implements PluginIdentifiableCommand {
      */
     public function execute(CommandSender $sender, string $commandLabel, array $args) {
         if(!$sender->hasPermission("sw.cmd")) {
-            $sender->sendMessage("§cYou have not permissions to use this command!");
+            $sender->sendMessage("You have not permissions to use this command!");
             return;
         }
         if(!isset($args[0])) {
-            $sender->sendMessage("§cUsage: §7/sw help");
+            $sender->sendMessage("Usage: /sw help");
             return;
         }
 
         switch ($args[0]) {
             case "help":
                 if(!$sender->hasPermission("sw.cmd.help")) {
-                    $sender->sendMessage("§cYou have not permissions to use this command!");
+                    $sender->sendMessage("You have not permissions to use this command!");
                     break;
                 }
-                $sender->sendMessage("§a> SkyWars commands:\n" .
-                    "§7/sw help : Displays list of SkyWars commands\n".
-                    "§7/sw create : Create SkyWars arena\n".
-                    "§7/sw remove : Remove SkyWars arena\n".
-                    "§7/sw set : Set SkyWars arena\n".
-                    "§7/sw arenas : Displays list of arenas");
+                $sender->sendMessage"SkyWars Commands:\n" .
+                    "/sw help : Displays List Of SkyWars Commands\n".
+                    "/sw create : Create SkyWars Arena\n".
+                    "/sw remove : Remove SkyWars Arena\n".
+                    "/sw set : Set SkyWars Arena\n".
+                    "/sw arenas : Displays List Of Arenas");
 
                 break;
             case "create":
                 if(!$sender->hasPermission("sw.cmd.create")) {
-                    $sender->sendMessage("§cYou have not permissions to use this command!");
+                    $sender->sendMessage("You have not permissions to use this command!");
                     break;
                 }
                 if(!isset($args[1])) {
-                    $sender->sendMessage("§cUsage: §7/sw create <arenaName>");
+                    $sender->sendMessage("Usage: /sw create <arenaName>");
                     break;
                 }
                 if(isset($this->plugin->arenas[$args[1]])) {
-                    $sender->sendMessage("§c> Arena $args[1] already exists!");
+                    $sender->sendMessage("> Arena $args[1] already exists!");
                     break;
                 }
                 $this->plugin->arenas[$args[1]] = new Arena($this->plugin, []);
-                $sender->sendMessage("§a> Arena $args[1] created!");
+                $sender->sendMessage("> Arena $args[1] created!");
                 break;
             case "remove":
                 if(!$sender->hasPermission("sw.cmd.remove")) {
-                    $sender->sendMessage("§cYou have not permissions to use this command!");
+                    $sender->sendMessage("You have not permissions to use this command!");
                     break;
                 }
                 if(!isset($args[1])) {
-                    $sender->sendMessage("§cUsage: §7/sw remove <arenaName>");
+                    $sender->sendMessage("Usage: /sw remove <arenaName>");
                     break;
                 }
                 if(!isset($this->plugin->arenas[$args[1]])) {
-                    $sender->sendMessage("§c> Arena $args[1] was not found!");
+                    $sender->sendMessage("> Arena $args[1] was not found!");
                     break;
                 }
 
@@ -117,50 +117,50 @@ class SkyWarsCommand extends Command implements PluginIdentifiableCommand {
                 if(is_file($file = $this->plugin->getDataFolder() . "arenas" . DIRECTORY_SEPARATOR . $args[1] . ".yml")) unlink($file);
                 unset($this->plugin->arenas[$args[1]]);
 
-                $sender->sendMessage("§a> Arena removed!");
+                $sender->sendMessage("> Arena removed!");
                 break;
             case "set":
                 if(!$sender->hasPermission("sw.cmd.set")) {
-                    $sender->sendMessage("§cYou have not permissions to use this command!");
+                    $sender->sendMessage("You have not permissions to use this command!");
                     break;
                 }
                 if(!$sender instanceof Player) {
-                    $sender->sendMessage("§c> This command can be used only in-game!");
+                    $sender->sendMessage("> This command can be used only in-game!");
                     break;
                 }
                 if(!isset($args[1])) {
-                    $sender->sendMessage("§cUsage: §7/sw set <arenaName>");
+                    $sender->sendMessage("Usage: /sw set <arenaName>");
                     break;
                 }
                 if(isset($this->plugin->setters[$sender->getName()])) {
-                    $sender->sendMessage("§c> You are already in setup mode!");
+                    $sender->sendMessage("> You are already in setup mode!");
                     break;
                 }
                 if(!isset($this->plugin->arenas[$args[1]])) {
-                    $sender->sendMessage("§c> Arena $args[1] does not found!");
+                    $sender->sendMessage("> Arena $args[1] does not found!");
                     break;
                 }
-                $sender->sendMessage("§a> You are joined setup mode.\n".
-                    "§7- use §lhelp §r§7to display available commands\n"  .
-                    "§7- or §ldone §r§7to leave setup mode");
+                $sender->sendMessage("> You are joined setup mode.\n".
+                    "- use help to display available commands\n"  .
+                    "- or done to leave setup mode");
                 $this->plugin->setters[$sender->getName()] = $this->plugin->arenas[$args[1]];
                 break;
             case "arenas":
                 if(!$sender->hasPermission("sw.cmd.arenas")) {
-                    $sender->sendMessage("§cYou have not permissions to use this command!");
+                    $sender->sendMessage("You have not permissions to use this command!");
                     break;
                 }
                 if(count($this->plugin->arenas) === 0) {
-                    $sender->sendMessage("§6> There are 0 arenas.");
+                    $sender->sendMessage("> There are 0 arenas.");
                     break;
                 }
-                $list = "§7> Arenas:\n";
+                $list = "> Arenas:\n";
                 foreach ($this->plugin->arenas as $name => $arena) {
                     if($arena->setup) {
-                        $list .= "§7- $name : §cdisabled\n";
+                        $list .= "- $name : disabled\n";
                     }
                     else {
-                        $list .= "§7- $name : §aenabled\n";
+                        $list .= "- $name : enabled\n";
                     }
                 }
                 $sender->sendMessage($list);
