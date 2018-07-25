@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2018 GamakCZ
+ * Copyright 2018 Swifty
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -109,17 +109,17 @@ class Arena implements Listener {
      */
     public function joinToArena(Player $player) {
         if(!$this->data["enabled"]) {
-            $player->sendMessage("§c> Arena is under setup!");
+            $player->sendMessage("> Arena is under setup!");
             return;
         }
 
         if(count($this->players) >= $this->data["slots"]) {
-            $player->sendMessage("§c> Arena is full!");
+            $player->sendMessage("> Arena is full!");
             return;
         }
 
         if($this->inGame($player)) {
-            $player->sendMessage("§c> You are already in game!");
+            $player->sendMessage("> You are already in game!");
             return;
         }
 
@@ -142,7 +142,7 @@ class Arena implements Listener {
         $player->setHealth(20);
         $player->setFood(20);
 
-        $this->broadcastMessage("§a> Player {$player->getName()} joined! §7[".count($this->players)."/{$this->data["slots"]}]");
+        $this->broadcastMessage("> Player {$player->getName()} joined! [".count($this->players)."/{$this->data["slots"]}]");
     }
 
     /**
@@ -182,11 +182,11 @@ class Arena implements Listener {
         $player->teleport($this->plugin->getServer()->getDefaultLevel()->getSpawnLocation());
 
         if(!$death) {
-            $this->broadcastMessage("§a> Player {$player->getName()} left the game. §7[".count($this->players)."/{$this->data["slots"]}]");
+            $this->broadcastMessage("> Player {$player->getName()} left the game. [".count($this->players)."/{$this->data["slots"]}]");
         }
 
         if($quitMsg != "") {
-            $player->sendMessage("§a> $quitMsg");
+            $player->sendMessage("> $quitMsg");
         }
     }
 
@@ -217,9 +217,9 @@ class Arena implements Listener {
             return;
         }
 
-        $player->addTitle("§aYOU WON!");
+        $player->addTitle("YOU WON!");
         $this->plugin->getServer()->getPluginManager()->callEvent(new PlayerArenaWinEvent($this->plugin, $player, $this));
-        $this->plugin->getServer()->broadcastMessage("§a[SkyWars] Player {$player->getName()} won the game at {$this->level->getFolderName()}!");
+        $this->plugin->getServer()->broadcastMessage("[SkyWars] Player {$player->getName()} won the game at {$this->level->getFolderName()}!");
         $this->phase = self::PHASE_RESTART;
     }
 
@@ -374,11 +374,11 @@ class Arena implements Listener {
         }
 
         if($this->phase == self::PHASE_GAME) {
-            $player->sendMessage("§c> Arena is in-game");
+            $player->sendMessage("> Arena is in-game");
             return;
         }
         if($this->phase == self::PHASE_RESTART) {
-            $player->sendMessage("§c> Arena is restarting!");
+            $player->sendMessage("> Arena is restarting!");
             return;
         }
 
@@ -402,7 +402,7 @@ class Arena implements Listener {
         }
         $this->toRespawn[$player->getName()] = $player;
         $this->disconnectPlayer($player, "", true);
-        $this->broadcastMessage("§a> {$this->plugin->getServer()->getLanguage()->translate($event->getDeathMessage())} §7[".count($this->players)."/{$this->data["slots"]}]");
+        $this->broadcastMessage("> {$this->plugin->getServer()->getLanguage()->translate($event->getDeathMessage())} [".count($this->players)."/{$this->data["slots"]}]");
         $event->setDeathMessage("");
         $event->setDrops([]);
     }
