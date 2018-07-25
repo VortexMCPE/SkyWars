@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Copyright 2018 GamakCZ
+ * Copyright 2018 Swifty
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -80,18 +80,18 @@ class SkyWars extends PluginBase implements Listener {
 
         switch ($args[0]) {
             case "help":
-                $player->sendMessage("§a> SkyWars setup help (1/1):\n".
-                "§7help : Displays list of available setup commands\n" .
-                "§7slots : Update arena slots\n".
-                "§7level : Set arena level\n".
-                "§7spawn : Set arena spawns\n".
-                "§7joinsign : Set arena joinsign\n".
-                "§7savelevel : Saves the arena level\n".
-                "§7enable : Enable the arena");
+                $player->sendMessage("SkyWars SetUp Help\n".
+                "Help : Displays List Of Available SetUp Commands\n" .
+                "Slots : Update Arena Slots\n".
+                "Level : Set Arena Level\n".
+                "Spawn : Set Arena Spawns\n".
+                "JoinSign : Set Arena JoinSign\n".
+                "SaveLevel : Saves The Arena Level\n".
+                "Enable : Enable The Arena");
                 break;
             case "slots":
                 if(!isset($args[1])) {
-                    $player->sendMessage("§cUsage: §7slots <int: slots>");
+                    $player->sendMessage("Usage: slots <int: slots>");
                     break;
                 }
                 $arena->data["slots"] = (int)$args[1];
@@ -99,27 +99,27 @@ class SkyWars extends PluginBase implements Listener {
                 break;
             case "level":
                 if(!isset($args[1])) {
-                    $player->sendMessage("§cUsage: §7level <levelName>");
+                    $player->sendMessage("Usage: level <levelName>");
                     break;
                 }
                 if(!$this->getServer()->isLevelGenerated($args[1])) {
-                    $player->sendMessage("§c> Level $args[1] does not found!");
+                    $player->sendMessage("> Level $args[1] does not found");
                     break;
                 }
-                $player->sendMessage("§a> Arena level updated to $args[1]!");
+                $player->sendMessage("> Arena level updated to $args[1]!");
                 $arena->data["level"] = $args[1];
                 break;
             case "spawn":
                 if(!isset($args[1])) {
-                    $player->sendMessage("§cUsage: §7setspawn <int: spawn>");
+                    $player->sendMessage("Usage: setspawn <int: spawn>");
                     break;
                 }
                 if(!is_numeric($args[1])) {
-                    $player->sendMessage("§cType number!");
+                    $player->sendMessage("Type number!");
                     break;
                 }
                 if((int)$args[1] > $arena->data["slots"]) {
-                    $player->sendMessage("§cThere are only {$arena->data["slots"]} slots!");
+                    $player->sendMessage("There are only {$arena->data["slots"]} slots");
                     break;
                 }
 
@@ -127,42 +127,42 @@ class SkyWars extends PluginBase implements Listener {
                 $player->sendMessage("§a> Spawn $args[1] set to X: " . (string)round($player->getX()) . " Y: " . (string)round($player->getY()) . " Z: " . (string)round($player->getZ()));
                 break;
             case "joinsign":
-                $player->sendMessage("§a> Break block to set joinsign!");
+                $player->sendMessage("> Break block to set joinsign");
                 $this->setupData[$player->getName()] = 0;
                 break;
             case "savelevel":
                 if(!$arena->level instanceof Level) {
-                    $player->sendMessage("§c> Error when saving level: world not found.");
+                    $player->sendMessage("> Error when saving level: world not found.");
                     if($arena->setup) {
-                        $player->sendMessage("§6> Try save level after enabling the arena.");
+                        $player->sendMessage("> Try save level after enabling the arena.");
                     }
                     break;
                 }
                 $arena->mapReset->saveMap($arena->level);
-                $player->sendMessage("§a> Level saved!");
+                $player->sendMessage("> Level saved!");
                 break;
             case "enable":
                 if(!$arena->setup) {
-                    $player->sendMessage("§6> Arena is already enabled!");
+                    $player->sendMessage("> Arena is already enabled");
                     break;
                 }
                 if(!$arena->enable()) {
-                    $player->sendMessage("§c> Could not load arena, there are missing information!");
+                    $player->sendMessage("> Could not load arena, there are missing information");
                     break;
                 }
-                $player->sendMessage("§a> Arena enabled!");
+                $player->sendMessage("> Arena enabled");
                 break;
             case "done":
-                $player->sendMessage("§a> You are successfully leaved setup mode!");
+                $player->sendMessage("> You are successfully leaved setup mode");
                 unset($this->setters[$player->getName()]);
                 if(isset($this->setupData[$player->getName()])) {
                     unset($this->setupData[$player->getName()]);
                 }
                 break;
             default:
-                $player->sendMessage("§6> You are in setup mode.\n".
-                    "§7- use §lhelp §r§7to display available commands\n"  .
-                    "§7- or §ldone §r§7to leave setup mode");
+                $player->sendMessage("> You are in setup mode.\n".
+                    "- use help to display available commands\n"  .
+                    "- or done to leave setup mode");
                 break;
         }
     }
@@ -177,7 +177,7 @@ class SkyWars extends PluginBase implements Listener {
             switch ($this->setupData[$player->getName()]) {
                 case 0:
                     $this->setters[$player->getName()]->data["joinsign"] = [(new Vector3($block->getX(), $block->getY(), $block->getZ()))->__toString(), $block->getLevel()->getFolderName()];
-                    $player->sendMessage("§a> Join sign updated!");
+                    $player->sendMessage("> Join sign updated!");
                     unset($this->setupData[$player->getName()]);
                     $event->setCancelled(\true);
                     break;
