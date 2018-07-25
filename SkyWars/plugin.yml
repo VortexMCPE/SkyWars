@@ -1,28 +1,32 @@
-name: SkyWars
-api: 3.0.0
-version: 1.1.0
+name: CustomSkyWars
+api: 4.0.0
+version: 1.0.0
 main: skywars\SkyWars
-author: GamakCZ
-description: SkyWars minigame plugin
-website: https://github.com/GamakCZ/SkyWars
+author: Swifty
+description: Custom SkyWars Plugin
+
+commands:
+ swlb:
+  description: "Spawns The SkyWars LeaderBored"
+  permission: swlb.cmd.use
 
 permissions:
   sw.cmd:
-    description: Permission to all SkyWars commands
+    description: Permission To All SkyWars Commands
     default: op
     children:
       sw.cmd.help:
-        description: Permission for /sw help
+        description: Permission For /sw help
         default: op
       sw.cmd.create:
-        description: Permission for /sw create
+        description: Permission For /sw create
         default: op
       sw.cmd.remove:
-        description: Permission for /sw remove
+        description: Permission For /sw remove
         default: op
       sw.cmd.set:
-        description: Permission for /sw set
+        description: Permission For /sw set
         default: op
       sw.cmd.arenas:
-        description: Permission for /sw arenas
+        description: Permission For /sw arenas
         default: op
